@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHub Web Form Demo</title>
+</head>
+<body>
+    <h2>Web Form</h2>
+    <label for="name">Name:</label>
+    <input type="text" id="name" required><br>
+    <label for="employeeCode">Employee Code:</label>
+    <input type="text" id="employeeCode" required><br>
+    <button onclick="submitFormData()">Submit</button>
+
+    <script>
+        function submitFormData() {
+            var name = document.getElementById('name').value;
+            var employeeCode = document.getElementById('employeeCode').value;
+
+            if (name && employeeCode) {
+                var data = {
+                    name: name,
+                    employeeCode: employeeCode
+                };
+
+                // Send data to GitHub Issues API
+                fetch('https://api.github.com/repos/yourusername/yourreponame/issues', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer YOUR_GITHUB_TOKEN'
+                    },
+                    body: JSON.stringify({
+                        title: 'New Form Submission',
+                        body: JSON.stringify(data)
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Data submitted successfully:', data);
+                    alert('Data submitted successfully!');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error submitting data. Please try again later.');
+                });
+            } else {
+                alert('Please enter your Name and Employee Code.');
+            }
+        }
+    </script>
+</body>
+</html>
